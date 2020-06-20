@@ -1,0 +1,7 @@
+.vscode
+.git
+.dockerignore
+*.run
+*.sql
+*.md
+Makefile
