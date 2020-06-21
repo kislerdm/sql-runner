@@ -17,14 +17,7 @@ type EnvVars struct {
 
 // ReadEnvVars function to read env variables
 func ReadEnvVars() (*EnvVars, error) {
-	// AwsAccessKeyID := os.Getenv("AWS_ACCESS_KEY_ID")
-	// AwsSecretAccessKey := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	AwsRegion := os.Getenv("AWS_DEFAULT_REGION")
-
-	// if !(AwsAccessKeyID != "" && AwsSecretAccessKey != "") {
-	// 	return &EnvVars{},
-	// 		fmt.Errorf("export 'AWS_ACCESS_KEY_ID' and 'AWS_SECRET_ACCESS_KEY' as env vars")
-	// }
 
 	if AwsRegion == "" {
 		AwsRegion = "us-west-2"
@@ -64,8 +57,6 @@ func ReadEnvVars() (*EnvVars, error) {
 
 	return &EnvVars{
 		AWS: &s3.Config{
-			// AwsAccessKeyID:     AwsAccessKeyID,
-			// AwsSecretAccessKey: AwsSecretAccessKey,
 			Region: AwsRegion,
 		},
 		DB: &redshift.Config{
