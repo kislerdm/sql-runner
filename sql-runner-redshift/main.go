@@ -38,7 +38,7 @@ func main() {
 		}
 
 		flag := false
-		for _, bucket := range []string{args.BucketSQL, args.BucketData} {
+		for _, bucket := range []string{args.BucketSQL} {
 			if !helper.InArrayStr(bucketsList, bucket) {
 				log.Printf("Specified bucket `%s` not found.", bucket)
 				flag = true
