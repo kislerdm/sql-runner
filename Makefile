@@ -24,3 +24,12 @@ run:
 
 build-docker:
 	@docker build -t ${DIR} .
+
+run-db:
+	@docker run -d \
+		-p 15439:5432 \
+		-e POSTGRES_DB=test \
+		-e POSTGRES_USER=admin \
+		-e POSTGRES_PASSWORD=qwe123asD \
+		-v ${PWD}/data:/data \
+		-t postgres:9.6-alpine

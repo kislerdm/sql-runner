@@ -1,4 +1,4 @@
-package main
+package inputconfig
 
 import (
 	"fmt"
@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-// Config connection configuration
-type Config struct {
+// EnvVars env vars configuration
+type EnvVars struct {
 	AwsAccessKeyID     string
 	AwsSecretAccessKey string
 	AwsRegion          string
@@ -18,14 +18,15 @@ type Config struct {
 	dbPassword         string
 }
 
-// readEnv function to read env variables
-func readEnv() (Config, error) {
+// ReadEnvVars function to read env variables
+func ReadEnvVars() (*EnvVars, error) {
 	AwsAccessKeyID := os.Getenv("AWS_ACCESS_KEY_ID")
 	AwsSecretAccessKey := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	AwsRegion := os.Getenv("AWS_DEFAULT_REGION")
 
 	if !(AwsAccessKeyID != "" && AwsSecretAccessKey != "") {
-		return Config{}, fmt.Errorf("export 'AWS_ACCESS_KEY_ID' and 'AWS_SECRET_ACCESS_KEY' as env vars")
+		return &EnvVars{},
+			fmt.Errorf("export 'AWS_ACCESS_KEY_ID' and 'AWS_SECRET_ACCESS_KEY' as env vars")
 	}
 
 	if AwsRegion == "" {
@@ -44,7 +45,7 @@ func readEnv() (Config, error) {
 	} else {
 		p, err := strconv.Atoi(Port)
 		if err != nil {
-			return Config{}, fmt.Errorf("specify int port as 'DB_PORT' env variable")
+			return &EnvVars{}, fmt.Errorf("specify int port as 'DB_PORT' env variable")
 		}
 		PortInt = p
 	}
@@ -64,7 +65,7 @@ func readEnv() (Config, error) {
 		dbPassword = "postgres"
 	}
 
-	return Config{
+	return &EnvVars{
 		AwsAccessKeyID:     AwsAccessKeyID,
 		AwsSecretAccessKey: AwsSecretAccessKey,
 		AwsRegion:          AwsRegion,
