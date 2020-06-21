@@ -1,4 +1,4 @@
-package inputconfig
+package config
 
 import (
 	"flag"
