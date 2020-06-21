@@ -52,6 +52,31 @@ func TestSplitQueries(t *testing.T) {
 	}
 }
 
+func FormatQuery(t *testing.T) {
+	tests := []struct {
+		inQuery      string
+		inParameters map[string]interface{}
+		want         string
+	}{
+		{
+			inQuery: `SELECT {col1} as a, {col2} as b, {col3} as date FROM data;`,
+			inParameters: map[string]interface{}{
+				"col1": "date",
+				"col2": 1,
+				"col3": "current_date",
+			},
+			want: `SELECT date as a, 1 as b, current_date as date FROM data;`,
+		},
+	}
+	for _, tt := range tests {
+		got := sqlparser.FormatQuery(tt.inQuery, tt.inParameters)
+		if tt.want != got {
+			t.Fatalf("Results don't match\ngot: %s\nwant: %s",
+				got, tt.want)
+		}
+	}
+}
+
 // func TestStripComments(t *testing.T) {
 // 	tests := []struct {
 // 		name string
@@ -60,23 +85,18 @@ func TestSplitQueries(t *testing.T) {
 // 	}{
 // 		{
 // 			name: "Query With In-line Comments",
-// 			in: `select col1, col2 --col3
-// from a
-// -- don't usually need this
-// left join b
-// 	using (col1)
+// 			in: `select col1, col2
+// from a -- test
 // ;`,
 // 			want: `select col1, col2
 // from a
-// left join b
-// 	using (col1)
 // ;`,
 // 		},
 // 	}
 
 // 	for _, tt := range tests {
 // 		got := sqlparser.StripComments(tt.in)
-// 		if got != tt.want {
+// 		if !strings.EqualFold(got, tt.want) {
 // 			t.Fatalf("[%s]: Results don't match\ngot: %s\nwant: %s",
 // 				tt.name, got, tt.want)
 // 		}
