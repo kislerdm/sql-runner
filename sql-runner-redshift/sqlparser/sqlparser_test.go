@@ -15,24 +15,10 @@ func TestSplitQueries(t *testing.T) {
 		{
 			name: "Split Two SQL Queries",
 			in: `SELECT col1;
-			SELECT col2
-			;
-			`,
+			SELECT col2;`,
 			want: []string{
 				"SELECT col1;",
 				"SELECT col2;",
-			},
-		},
-		{
-			name: "Split Two Queries With Comments",
-			in: `SELECT col1; --comment1
-			SELECT col2
-			;
-			`,
-			want: []string{
-				"SELECT col1;",
-				`--comment1
-			SELECT col2;`,
 			},
 		},
 	}
